@@ -1,0 +1,48 @@
+name: Deploy PWA to GitHub Pages
+
+on:
+  push: { branches: [main, master] }
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Move files to site root
+        run: |
+          mkdir -p _site
+          SRC=""
+          if [ -d "诗意绽放的未来APP/www" ]; then SRC="诗意绽放的未来APP/www"
+          elif [ -d "www" ]; then SRC="www"
+          elif [ -f "index.html" ]; then SRC="."; fi
+          echo "SRC=$SRC"
+          if [ -n "$SRC" ]; then
+            (cd "$SRC" && tar cf - .) | (cd _site && tar xf -)
+          fi
+          ls -la _site
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with: { path: ./_site }
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
