@@ -1,0 +1,34 @@
+{
+  "appId": "com.poeticbloom.future",
+  "appName": "诗意绽放的未来",
+  "webDir": "www",
+  "bundledWebRuntime": false,
+  "backgroundColor": "#F5EFE9",
+  "android": {
+    "allowMixedContent": false,
+    "captureInputTap": true,
+    "webContentsDebuggingEnabled": false,
+    "backgroundColor": "#F5EFE9",
+    "orientation": "portrait",
+    "themeColor": "#D4A5A5",
+    "navigationBarColor": "#F5EFE9",
+    "pushNotificationIcon": "ic_stat_icon"
+  },
+  "ios": {
+    "backgroundColor": "#F5EFE9",
+    "contentInset": "always",
+    "scrollEnabled": false,
+    "limitsNavigationsToPodDomains": true
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 1200,
+      "launchAutoHide": true,
+      "backgroundColor": "#F5EFE9",
+      "androidScaleType": "CENTER_CROP",
+      "showSpinner": false,
+      "splashFullScreen": true,
+      "splashImmersive": true
+    }
+  }
+}

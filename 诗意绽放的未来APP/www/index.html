@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<!-- ============ 视口与全屏适配（含 OPPO/ColorOS 沉浸式） ============ -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="诗意绽放">
+<!-- OPPO / ColorOS / 安卓通用全屏与竖屏适配 -->
+<meta name="full-screen" content="yes">
+<meta name="fullscreen" content="yes">
+<meta name="x5-fullscreen" content="true">
+<meta name="browsermode" content="application">
+<meta name="screen-orientation" content="portrait">
+<meta name="x5-orientation" content="portrait">
+<meta name="UC-USV" content="1">
+<!-- PWA：使用相对路径引用，便于 Capacitor 打包后同源加载 -->
+<link rel="manifest" href="./manifest.json">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.jpg">
+<link rel="icon" type="image/svg+xml" href="./icons/icon.svg">
+<link rel="icon" type="image/jpeg" sizes="512x512" href="./icons/icon-512.jpg">
+<meta name="theme-color" content="#D4A5A5">
+<meta name="format-detection" content="telephone=no">
+<title>诗意绽放的未来 · 钻石激励</title>
+<style>
+/* ============================================================
+   诗意绽放的未来 · 莫兰迪低饱和治愈风
+   配色可在 :root 内自行修改；数值参数在 CONFIG 内修改
+   ============================================================ */
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+:root {
+  --cream-bg:#F5EFE9;        /* 主背景：暖奶白 */
+  --cream-card:#FBF7F3;     /* 卡片底：奶白 */
+  --smoke-rose:#D4A5A5;     /* 主色：豆沙烟粉 */
+  --smoke-rose-deep:#A8857F;/* 深色：深豆沙 */
+  --nude-blush:#E8D0CC;     /* 浅裸粉 */
+  --lavender-mist:#C9BED9;  /* 浅灰紫点缀 */
+  --gold-soft:#C9B896;      /* 哑光金 */
+  --text-warm:#6B5852;      /* 暖深灰文字 */
+  --text-soft:#9C8A85;      /* 柔灰文字 */
+  --line-soft:rgba(180,140,130,0.16);
+  --shadow:0 4px 20px rgba(150,120,110,0.10);
+  --shadow-deep:0 6px 24px rgba(150,120,110,0.14);
+  --safe-top:env(safe-area-inset-top,0px);
+  --safe-bottom:env(safe-area-inset-bottom,0px);
+  --safe-left:env(safe-area-inset-left,0px);
+  --safe-right:env(safe-area-inset-right,0px);
+}
+html,body { height:100%; }
+body {
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+  background:var(--cream-bg);
+  color:var(--text-warm);
+  font-size:16px; overflow:hidden;
+  -webkit-font-smoothing:antialiased;
+  -webkit-user-select:none; user-select:none;
+}
+.app {
+  display:flex; flex-direction:column;
+  height:100vh; height:100dvh;
+  max-width:520px; margin:0 auto;
+  position:relative;
+  background:var(--cream-bg);
+  padding-left:var(--safe-left); padding-right:var(--safe-right);
+}
+/* 全局云朵/星点暗纹装饰 */
+.app::before {
+  content:''; position:absolute; inset:0; pointer-events:none; z-index:0;
+  background:
+    radial-gradient(circle at 12% 8%, rgba(201,190,217,0.22), transparent 35%),
+    radial-gradient(circle at 88% 12%, rgba(212,165,165,0.20), transparent 38%),
+    radial-gradient(circle at 50% 95%, rgba(201,184,150,0.14), transparent 40%);
+}
+/* ============ 顶部头部 ============ */
+.header {
+  position:relative; z-index:2;
+  padding:calc(var(--safe-top) + 14px) 18px 14px;
+  background:linear-gradient(135deg,#E8D0CC 0%,#D4A5A5 50%,#C9BED9 100%);
+  color:#fff; flex-shrink:0;
+  box-shadow:0 2px 16px rgba(168,133,127,0.18);
+}
+.header-row { display:flex; align-items:center; justify-content:space-between; }
+.app-title { font-size:19px; font-weight:700; letter-spacing:1px; text-shadow:0 1px 3px rgba(0,0,0,0.08); }
+.header-right { display:flex; align-items:center; gap:6px; }
+.diamond-box {
+  background:rgba(255,255,255,0.45);
+  padding:7px 14px; border-radius:22px;
+  display:flex; align-items:center; gap:7px;
+  font-weight:700; font-size:15px;
+  backdrop-filter:blur(4px);
+}
+/* 圆润水晶宝石图标 */
+.gem {
+  width:20px; height:20px; display:inline-block;
+  background:
+    radial-gradient(circle at 35% 25%, rgba(255,255,255,0.95), transparent 42%),
+    linear-gradient(135deg,#F0DCD6,#D4A5A5 55%,#A8857F);
+  border-radius:38% 38% 46% 46% / 22% 22% 78% 78%;
+  box-shadow:0 1px 4px rgba(168,133,127,0.4), inset 0 -2px 3px rgba(120,90,85,0.25);
+}
+.gear-btn {
+  background:rgba(255,255,255,0.4); border:none; color:#fff;
+  width:34px; height:34px; border-radius:50%;
+  font-size:16px; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  backdrop-filter:blur(4px);
+}
+.gear-btn:active { transform:scale(0.9); }
+
+/* ============ 活跃度进度条 + 宝箱节点（沿进度条分布） ============ */
+.activity-wrap {
+  position:relative; margin-top:12px;
+  padding:26px 4px 18px;   /* 上下留白给宝箱节点与标注 */
+}
+.activity-track {
+  position:relative; height:8px;
+  background:rgba(255,255,255,0.4);
+  border-radius:5px; overflow:visible;
+}
+.activity-fill {
+  position:absolute; left:0; top:0; height:100%; width:0%;
+  background:linear-gradient(90deg,#E8C5A0,#D4A5A5);
+  border-radius:5px; transition:width 0.6s ease;
+  box-shadow:0 0 8px rgba(212,165,165,0.55);
+}
+/* 宝箱节点（沿进度条按比例分布） */
+.chest-nodes { position:absolute; left:0; right:0; top:-13px; pointer-events:none; }
+.chest-node {
+  position:absolute; transform:translateX(-50%);
+  width:34px; height:34px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:17px; cursor:pointer; pointer-events:auto;
+  background:linear-gradient(135deg,#F5E6D5,#E8D0BC);
+  border:2px solid rgba(201,184,150,0.45);
+  box-shadow:0 3px 10px rgba(180,150,120,0.22);
+  transition:transform 0.18s, filter 0.2s, background 0.3s;
+}
+.chest-node span { line-height:1; }
+.chest-node.met {
+  background:linear-gradient(135deg,#FFE4B5,#FFC97A);
+  border-color:#E0A050;
+  filter:drop-shadow(0 0 7px rgba(255,200,120,0.7));
+  animation:chestGlow 1.6s ease-in-out infinite alternate;
+}
+@keyframes chestGlow { from{filter:drop-shadow(0 0 5px rgba(255,200,120,0.5));} to{filter:drop-shadow(0 0 11px rgba(255,200,120,0.85));} }
+.chest-node.claimed { background:#E8E0DA; opacity:0.5; }
+.chest-node.locked { filter:grayscale(0.85) opacity(0.7); }
+.chest-node:active { transform:translateX(-50%) scale(0.88); }
+/* 节点下方标注 */
+.chest-label {
+  position:absolute; transform:translateX(-50%);
+  top:24px; font-size:10px; font-weight:700;
+  color:rgba(255,255,255,0.95); white-space:nowrap;
+  text-shadow:0 1px 3px rgba(0,0,0,0.15);
+  pointer-events:none;
+}
+.chest-label .req { opacity:0.85; }
+.chest-label .rew { color:#FFE7B5; margin-top:1px; }
+.chest-add-inline {
+  position:absolute; right:-2px; top:-14px;
+  width:26px; height:26px; border-radius:50%;
+  background:rgba(255,255,255,0.55); border:none; color:#fff;
+  font-size:16px; cursor:pointer; line-height:1;
+  display:flex; align-items:center; justify-content:center;
+}
+.chest-add-inline:active { transform:scale(0.9); }
+.activity-text { font-size:12px; margin-top:8px; opacity:0.95; letter-spacing:0.5px; }
+
+/* ============ 主内容 ============ */
+.main {
+  position:relative; z-index:1;
+  flex:1; overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+  padding:14px 16px 24px;
+}
+.main::-webkit-scrollbar { display:none; }
+.tab-panel { display:none; }
+.tab-panel.active { display:block; }
+/* 半透明圆角卡片 */
+.card {
+  background:rgba(251,247,243,0.85);
+  border-radius:22px;
+  padding:16px; margin-bottom:14px;
+  box-shadow:var(--shadow);
+  border:1px solid var(--line-soft);
+  backdrop-filter:blur(6px);
+}
+.card-row { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.card-title { font-weight:700; font-size:16px; color:var(--text-warm); flex:1; word-break:break-word; line-height:1.45; }
+.card-sub { font-size:13px; color:var(--text-soft); margin-top:6px; line-height:1.55; }
+.tag {
+  display:inline-block; padding:4px 12px;
+  border-radius:14px; font-size:12px; font-weight:600;
+  background:rgba(212,165,165,0.18); color:var(--smoke-rose-deep);
+  margin-right:6px; margin-top:6px;
+}
+.tag.gold { background:rgba(201,184,150,0.22); color:#8a7444; }
+.tag.done { background:rgba(160,180,140,0.22); color:#5a7048; }
+.tag.stock { background:rgba(201,190,217,0.25); color:#6a5a85; }
+.tag.soldout { background:rgba(180,170,165,0.2); color:#8a7a75; }
+/* ============ 按钮（圆润、莫兰迪渐变、点击缩放） ============ */
+.btn {
+  border:none; border-radius:28px;
+  padding:12px 22px; font-size:15px; font-weight:700;
+  cursor:pointer; color:#fff;
+  background:linear-gradient(135deg,#E0B5B0,#C99EA0 60%,#A8857F);
+  transition:transform 0.14s, opacity 0.2s, box-shadow 0.2s;
+  min-height:48px;
+  display:inline-flex; align-items:center; justify-content:center; gap:5px;
+  box-shadow:0 4px 14px rgba(168,133,127,0.28), inset 0 1px 0 rgba(255,255,255,0.3);
+  letter-spacing:0.5px;
+}
+.btn:active { transform:scale(0.95); }
+.btn-sm { padding:9px 18px; font-size:13px; min-height:40px; }
+.btn-outline { background:rgba(255,255,255,0.8); border:1.5px solid var(--smoke-rose); color:var(--smoke-rose-deep); box-shadow:none; }
+.btn-gold { background:linear-gradient(135deg,#D4BE9A,#B89E70 60%,#8a7444); box-shadow:0 4px 14px rgba(180,158,112,0.3); }
+.btn-lavender { background:linear-gradient(135deg,#D4C9E0,#B5A8C5 60%,#8a7a9a); box-shadow:0 4px 14px rgba(150,130,170,0.25); }
+.btn-danger { background:linear-gradient(135deg,#D4A5A5,#B5857F); box-shadow:0 4px 14px rgba(160,110,100,0.25); }
+.btn-gray { background:#E8E0DA; color:#A89A95; cursor:not-allowed; box-shadow:none; }
+.btn-block { width:100%; }
+.btn:disabled { opacity:0.5; }
+/* 悬浮添加按钮 */
+.fab {
+  position:fixed; right:18px;
+  bottom:calc(82px + var(--safe-bottom));
+  width:58px; height:58px; border-radius:50%;
+  background:linear-gradient(135deg,#E0B5B0,#C99EA0 60%,#A8857F);
+  color:#fff; border:none; font-size:30px;
+  box-shadow:0 8px 26px rgba(168,133,127,0.45), inset 0 1px 0 rgba(255,255,255,0.35);
+  z-index:50; cursor:pointer;
+}
+.fab:active { transform:scale(0.9); }
+/* 底部 tab */
+.tabbar {
+  position:relative; z-index:2;
+  display:flex; background:rgba(251,247,243,0.95);
+  border-top:1px solid var(--line-soft);
+  padding:8px 0 calc(8px + var(--safe-bottom));
+  flex-shrink:0; backdrop-filter:blur(6px);
+}
+.tab {
+  flex:1; background:none; border:none;
+  display:flex; flex-direction:column; align-items:center; gap:3px;
+  color:var(--text-soft); font-size:11px; font-weight:600;
+  padding:7px 0; cursor:pointer;
+}
+.tab-icon { font-size:24px; line-height:1; }
+.tab.active { color:var(--smoke-rose-deep); }
+.tab.active .tab-icon { transform:scale(1.08); transition:transform 0.2s; }
+/* 空状态 */
+.empty { text-align:center; padding:48px 24px; color:var(--text-soft); font-size:14px; }
+.empty-icon { font-size:56px; opacity:0.45; margin-bottom:14px; }
+/* 模态层 */
+.modal-mask {
+  position:fixed; inset:0;
+  background:rgba(107,88,82,0.4);
+  display:none; align-items:flex-end; justify-content:center;
+  z-index:100; backdrop-filter:blur(4px);
+}
+.modal-mask.show { display:flex; }
+.modal {
+  background:linear-gradient(180deg,#FBF7F3,#F5EFE9 40%);
+  border-radius:26px 26px 0 0;
+  width:100%; max-width:520px;
+  padding:22px 22px calc(24px + var(--safe-bottom));
+  max-height:90vh; overflow-y:auto;
+  animation:sheetUp 0.3s ease;
+  box-shadow:0 -6px 30px rgba(150,120,110,0.18);
+}
+@keyframes sheetUp { from{transform:translateY(100%);} to{transform:translateY(0);} }
+.modal-title { font-size:20px; font-weight:700; margin-bottom:18px; text-align:center; color:var(--text-warm); letter-spacing:0.5px; }
+.field { margin-bottom:16px; }
+.field label { display:block; font-size:13px; color:var(--smoke-rose-deep); margin-bottom:8px; font-weight:600; }
+.field input, .field textarea, .field select {
+  width:100%; padding:13px 16px;
+  border:1.5px solid var(--line-soft); border-radius:16px;
+  font-size:15px; background:#fff; color:var(--text-warm);
+  font-family:inherit;
+}
+.field input:focus, .field textarea:focus, .field select:focus { outline:none; border-color:var(--smoke-rose); background:#fff; }
+.modal-actions { display:flex; gap:10px; margin-top:12px; }
+/* ============ 番茄计时全屏（莫兰迪+自定义背景+磨砂淡化） ============ */
+.timer-screen {
+  position:fixed; inset:0; z-index:200;
+  display:none; flex-direction:column;
+  align-items:center; justify-content:center;
+  color:#fff; padding:20px;
+  padding-top:calc(var(--safe-top) + 44px);
+  overflow:hidden;
+}
+.timer-screen.show { display:flex; }
+/* 背景图层（可换自定义图，自动磨砂淡化） */
+.timer-bg {
+  position:absolute; inset:0; z-index:0;
+  background:linear-gradient(160deg,#B8908A 0%,#D4A5A5 45%,#C9BED9 100%);
+  background-size:cover; background-position:center;
+}
+.timer-bg.has-img { transform:scale(1.12); filter:blur(7px) brightness(0.72); }
+/* 磨砂叠加层，保证文字清晰 */
+.timer-overlay {
+  position:absolute; inset:0; z-index:1;
+  background:linear-gradient(180deg,rgba(184,144,138,0.35),rgba(201,190,217,0.25));
+}
+/* 装饰：小蝴蝶结、浅星、云朵暗纹 */
+.timer-deco { position:absolute; inset:0; z-index:2; pointer-events:none; overflow:hidden; }
+.timer-deco span { position:absolute; opacity:0.22; user-select:none; }
+.timer-task-name {
+  position:relative; z-index:3;
+  font-size:19px; margin-bottom:30px; text-align:center;
+  padding:0 24px; font-weight:600; opacity:0.98;
+  text-shadow:0 2px 8px rgba(0,0,0,0.18);
+}
+/* 倒计时时钟：圆润大号数字 + 莫兰迪粉圆形表盘 + 柔和外发光 */
+.timer-ring {
+  position:relative; z-index:3;
+  width:268px; height:268px; margin-bottom:30px;
+  filter:drop-shadow(0 0 26px rgba(255,255,255,0.5));
+}
+.timer-ring svg { transform:rotate(-90deg); }
+.timer-ring circle { fill:none; stroke-width:11; }
+.timer-ring .track { stroke:rgba(255,255,255,0.28); }
+.timer-ring .progress {
+  stroke:#fff; stroke-linecap:round;
+  transition:stroke-dashoffset 1s linear;
+  filter:drop-shadow(0 0 7px rgba(255,255,255,0.7));
+}
+.timer-display {
+  position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  font-size:50px; font-weight:300; letter-spacing:3px;
+  text-shadow:0 2px 14px rgba(0,0,0,0.18);
+  font-variant-numeric:tabular-nums;
+}
+.timer-tip {
+  position:relative; z-index:3;
+  font-size:13px; opacity:0.92; text-align:center;
+  max-width:300px; line-height:1.75;
+  text-shadow:0 1px 6px rgba(0,0,0,0.2);
+}
+.timer-actions {
+  position:relative; z-index:3;
+  display:flex; gap:12px; margin-top:32px;
+}
+.timer-act-btn {
+  background:rgba(255,255,255,0.28);
+  border:1.5px solid rgba(255,255,255,0.55);
+  color:#fff; padding:10px 22px;
+  border-radius:24px; font-size:14px; font-weight:600;
+  min-height:44px; cursor:pointer;
+  transition:transform 0.14s, background 0.2s;
+}
+.timer-act-btn:active { transform:scale(0.95); background:rgba(255,255,255,0.4); }
+/* ============ 宝箱管理列表（弹窗内） ============ */
+.chest-mgr-item {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:12px 14px; border-radius:14px; margin-bottom:8px;
+  background:rgba(255,255,255,0.7); border:1px solid var(--line-soft);
+}
+.chest-mgr-info { font-size:13px; color:var(--text-warm); }
+.chest-mgr-acts { display:flex; gap:4px; }
+/* 历史记录 */
+.history-item {
+  display:flex; justify-content:space-between; align-items:center;
+  padding:12px 0; border-bottom:1px dashed var(--line-soft); font-size:14px;
+}
+.history-item:last-child { border-bottom:none; }
+.history-time { font-size:12px; color:var(--text-soft); margin-top:3px; }
+.diamond-num { color:#8a6f44; font-weight:700; }
+/* 引导提示 */
+.guide-tip {
+  background:linear-gradient(135deg,rgba(212,165,165,0.14),rgba(201,190,217,0.12));
+  border-radius:18px; padding:14px 16px;
+  font-size:13px; color:var(--smoke-rose-deep);
+  margin-bottom:14px; line-height:1.65;
+  border:1px solid var(--line-soft);
+}
+.icon-btn {
+  background:none; border:none; padding:7px 9px;
+  font-size:19px; color:var(--text-soft); cursor:pointer;
+  min-height:40px; min-width:40px;
+}
+.icon-btn:active { transform:scale(0.9); }
+.task-actions { display:flex; gap:5px; align-items:center; flex-wrap:wrap; }
+/* 成就进度条 */
+.mini-progress {
+  height:8px; background:rgba(212,165,165,0.16); border-radius:5px; overflow:hidden;
+  margin-top:8px;
+}
+.mini-progress-fill {
+  height:100%; background:linear-gradient(90deg,#E0B5B0,#C9BED9);
+  border-radius:5px; transition:width 0.5s;
+}
+/* Toast */
+#toast {
+  position:fixed; left:50%; top:50%;
+  transform:translate(-50%,-50%);
+  background:rgba(107,88,82,0.92); color:#fff;
+  padding:12px 22px; border-radius:16px;
+  font-size:14px; z-index:300; font-weight:600;
+  pointer-events:none; max-width:80%; text-align:center;
+  transition:opacity 0.3s; letter-spacing:0.5px;
+}
+/* 成就达成弹窗 */
+.ach-popup {
+  position:fixed; inset:0; z-index:250;
+  background:rgba(107,88,82,0.5); backdrop-filter:blur(4px);
+  display:none; align-items:center; justify-content:center; padding:30px;
+}
+.ach-popup.show { display:flex; animation:popIn 0.4s ease; }
+@keyframes popIn { from{transform:scale(0.7);opacity:0;} to{transform:scale(1);opacity:1;} }
+.ach-popup-box {
+  background:linear-gradient(180deg,#FBF7F3,#F5EFE9 40%);
+  border-radius:26px; padding:30px 26px;
+  text-align:center; max-width:340px; width:100%;
+  box-shadow:0 12px 44px rgba(150,120,110,0.3);
+  border:2px solid rgba(212,165,165,0.35);
+}
+.ach-popup-icon { font-size:60px; margin-bottom:12px; }
+.ach-popup-title { font-size:21px; font-weight:700; color:var(--smoke-rose-deep); margin-bottom:10px; }
+.ach-popup-name { font-size:16px; color:var(--text-warm); margin-bottom:14px; font-weight:600; }
+.ach-popup-reward { font-size:19px; color:#8a6f44; font-weight:700; margin-bottom:20px; }
+/* 背景图选择面板 */
+.bg-item {
+  display:flex; align-items:center; gap:10px;
+  padding:10px; border-radius:14px;
+  background:rgba(255,255,255,0.7); margin-bottom:8px;
+  border:1px solid var(--line-soft);
+}
+.bg-item.active { border-color:var(--smoke-rose); background:rgba(212,165,165,0.15); }
+.bg-thumb { width:48px; height:48px; border-radius:10px; object-fit:cover; background:#EDE5DD; }
+.bg-item-info { flex:1; font-size:13px; color:var(--text-warm); }
+/* 安装提示横幅（PWA beforeinstallprompt） */
+.install-banner {
+  position:fixed; left:12px; right:12px;
+  bottom:calc(86px + var(--safe-bottom));
+  background:linear-gradient(135deg,#D4A5A5,#C9BED9);
+  color:#fff; padding:12px 14px; border-radius:18px;
+  display:none; align-items:center; justify-content:space-between;
+  gap:10px; z-index:90; box-shadow:0 6px 22px rgba(168,133,127,0.35);
+  font-size:13px; font-weight:600;
+}
+.install-banner.show { display:flex; }
+.install-banner button {
+  background:rgba(255,255,255,0.9); color:var(--smoke-rose-deep);
+  border:none; border-radius:14px; padding:8px 14px; font-weight:700; font-size:13px; cursor:pointer;
+}
+.install-banner .close-x { background:rgba(255,255,255,0.25); color:#fff; width:26px; height:26px; border-radius:50%; }
+.btn, .tab, .fab, .gear-btn { user-select:none; -webkit-user-select:none; }
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- 顶部头部 -->
+  <header class="header">
+    <div class="header-row">
+      <div class="app-title">🌸 诗意绽放</div>
+      <div class="header-right">
+        <button class="gear-btn" onclick="openSettings()" aria-label="管理">⚙️</button>
+        <div class="diamond-box">
+          <span class="gem"></span>
+          <span id="diamondCount">0</span>
+        </div>
+      </div>
+    </div>
+    <!-- 活跃度进度条 + 宝箱节点（沿进度条分布） -->
+    <div class="activity-wrap">
+      <div class="activity-track">
+        <div class="activity-fill" id="activityFill"></div>
+        <div class="chest-nodes" id="chestNodes"></div>
+        <button class="chest-add-inline" onclick="openChestForm()" aria-label="添加宝箱">+</button>
+      </div>
+      <div class="activity-text" id="activityText">今日活跃度：0</div>
+    </div>
+  </header>
+
+  <!-- 主内容 -->
+  <main class="main">
+    <!-- 每日任务 -->
+    <section class="tab-panel active" id="panel-tasks">
+      <div class="guide-tip">🌷 每日任务需开启番茄钟，专注倒计时走完方可完成。手动勾选/改系统时间均无效。<br>💡 上方进度条上的宝箱达到对应活跃度会自动亮起，点击即可领取钻石。</div>
+      <div id="taskList"></div>
+      <div class="empty" id="taskEmpty" style="display:none"><div class="empty-icon">📝</div>点击右下角 + 添加你的第一个任务</div>
+    </section>
+    <!-- 成就 -->
+    <section class="tab-panel" id="panel-achievements">
+      <div class="guide-tip">🎀 自定义成就：创建时绑定指定任务与完成次数，程序自动统计累计完成量，达标自动发放钻石，无需手动解锁。</div>
+      <div id="achievementList"></div>
+      <div class="empty" id="achievementEmpty" style="display:none"><div class="empty-icon">🏆</div>点击右下角 + 添加你的第一个成就</div>
+    </section>
+    <!-- 商城 -->
+    <section class="tab-panel" id="panel-shop">
+      <div class="guide-tip">🛍️ 自定义商城：消耗钻石购买商品，自动扣钻石减库存，库存归零自动下架，购买记录完整保存。</div>
+      <div id="shopList"></div>
+      <div class="empty" id="shopEmpty" style="display:none"><div class="empty-icon">🛍️</div>点击右下角 + 添加你的第一个商品</div>
+      <div class="card" id="historyCard" style="display:none"><div style="font-weight:700;margin-bottom:10px;font-size:16px;color:var(--text-warm)">📜 购买记录</div><div id="historyList"></div></div>
+    </section>
+  </main>
+
+  <button class="fab" id="fab">+</button>
+
+  <nav class="tabbar">
+    <button class="tab active" data-tab="tasks"><span class="tab-icon">🌷</span><span>任务</span></button>
+    <button class="tab" data-tab="achievements"><span class="tab-icon">🎀</span><span>成就</span></button>
+    <button class="tab" data-tab="shop"><span class="tab-icon">🎁</span><span>商城</span></button>
+  </nav>
+</div>
+
+<!-- 番茄计时全屏 -->
+<div class="timer-screen" id="timerScreen">
+  <div class="timer-bg" id="timerBg"></div>
+  <div class="timer-overlay"></div>
+  <div class="timer-deco">
+    <span style="top:9%;left:13%;font-size:22px">✿</span>
+    <span style="top:16%;right:15%;font-size:18px">✦</span>
+    <span style="bottom:16%;left:16%;font-size:20px">✿</span>
+    <span style="top:34%;left:7%;font-size:24px">☁</span>
+    <span style="bottom:24%;right:9%;font-size:24px">☁</span>
+    <span style="top:52%;right:5%;font-size:16px">✦</span>
+  </div>
+  <div class="timer-task-name" id="timerTaskName"></div>
+  <div class="timer-ring">
+    <svg width="268" height="268">
+      <circle class="track" cx="134" cy="134" r="120"></circle>
+      <circle class="progress" id="timerProgress" cx="134" cy="134" r="120" stroke-dasharray="753.98" stroke-dashoffset="0"></circle>
+    </svg>
+    <div class="timer-display" id="timerDisplay">25:00</div>
+  </div>
+  <div class="timer-tip">保持专注，倒计时结束后自动完成任务并发放活跃度。<br>退出页面计时暂停，再次打开继续；修改系统时间无效。</div>
+  <div class="timer-actions">
+    <button class="timer-act-btn" onclick="openBgPanel()">🖼️ 背景</button>
+    <button class="timer-act-btn" onclick="abandonTimer()">放弃专注</button>
+  </div>
+</div>
+
+<!-- 模态层 -->
+<div class="modal-mask" id="modalMask"><div class="modal" id="modalContent"></div></div>
+
+<!-- 成就弹窗 -->
+<div class="ach-popup" id="achPopup"><div class="ach-popup-box"><div class="ach-popup-icon">🎉</div><div class="ach-popup-title">成就达成</div><div class="ach-popup-name" id="achPopupName"></div><div class="ach-popup-reward" id="achPopupReward"></div><button class="btn btn-block" onclick="closeAchPopup()">太棒了</button></div></div>
+
+<!-- PWA 安装横幅 -->
+<div class="install-banner" id="installBanner">
+  <span>📱 安装到主屏幕，全屏当 APP 用</span>
+  <div style="display:flex;gap:8px;align-items:center">
+    <button onclick="installPWA()">安装</button>
+    <button class="close-x" onclick="hideInstallBanner()">×</button>
+  </div>
+</div>
+
+<!-- 隐藏文件上传 -->
+<input type="file" id="bgFileInput" accept="image/*" style="display:none">
+
+<script>
+/* ============================================================
+   诗意绽放的未来 · 钻石激励系统
+   全局配置在 CONFIG，配色在 :root，可自行修改
+   ============================================================ */
+const CONFIG = {
+  defaultTaskMinutes:25,
+  defaultTaskActivity:10,
+  defaultChestReq:[20,40,60,80],
+  defaultChestReward:[10,20,30,50],
+  defaultShopCost:50,
+  defaultShopStock:10,
+  defaultAchCount:5,
+  timerTickMs:1000,
+  maxDeltaMs:5000,        // 单次 tick 最大允许间隔，超过视为系统时间异常
+  ringCount:5,
+  ringIntervalMs:600,
+  ringFreq:880,
+  bgMaxWidth:900,         // 背景图压缩最大宽度
+  bgQuality:0.65,         // 背景图 JPEG 压缩质量
+  sigSalt:'pa_2026_morandi_rose', // 数据签名盐值，加固防篡改
+};
+const KEYS = {
+  diamond:'pa_diamond', tasks:'pa_tasks', chests:'pa_chests',
+  achievements:'pa_achievements', shop:'pa_shop', history:'pa_history',
+  activity:'pa_activity', claimedChests:'pa_claimed',
+  taskDoneToday:'pa_taskdone', timer:'pa_timer', lastDate:'pa_lastdate',
+  taskStats:'pa_taskstats', backgrounds:'pa_backgrounds', currentBg:'pa_currentbg',
+  lastTs:'pa_lastts',      // 上次 tick 时间戳，用于检测时间倒退
+  sig:'pa_sig',            // 数据完整性签名
+  installDismiss:'pa_install_dismiss',
+};
+let state = {
+  diamond:0, tasks:[], chests:[], achievements:[], shop:[], history:[],
+  activity:0, claimedChests:[], taskDoneToday:[], timer:null,
+  taskStats:{}, backgrounds:[], currentBg:-1, currentTab:'tasks',
+};
+
+/* ---------- 工具 ---------- */
+function $(id){ return document.getElementById(id); }
+function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
+function pad(n){ return String(n).padStart(2,'0'); }
+function todayStr(){ const d=new Date(); return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
+function escapeHtml(s){ if(s==null)return ''; return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+/* ---------- 数据加固：简单签名（防外部直接改 localStorage） ---------- */
+function computeSig(){
+  const payload = [
+    state.diamond, state.activity,
+    JSON.stringify(state.tasks), JSON.stringify(state.chests),
+    JSON.stringify(state.achievements), JSON.stringify(state.shop),
+    JSON.stringify(state.history), JSON.stringify(state.taskStats),
+    JSON.stringify(state.taskDoneToday), JSON.stringify(state.claimedChests),
+    JSON.stringify(state.backgrounds), state.currentBg
+  ].join('|');
+  // 简易字符串散列（djb2 变体）
+  let h = 5381;
+  for (let i = 0; i < payload.length; i++) {
+    h = ((h << 5) + h) ^ payload.charCodeAt(i);
+    h = h >>> 0;
+  }
+  let h2 = 0;
+  for (let i = 0; i < CONFIG.sigSalt.length; i++) {
+    h2 = (h2 * 33 + CONFIG.sigSalt.charCodeAt(i)) >>> 0;
+  }
+  return (h ^ h2).toString(36) + '_' + payload.length.toString(36);
+}
+
+/* ---------- 持久化（带签名加固） ---------- */
+function save(){
+  localStorage.setItem(KEYS.diamond, state.diamond);
+  localStorage.setItem(KEYS.tasks, JSON.stringify(state.tasks));
+  localStorage.setItem(KEYS.chests, JSON.stringify(state.chests));
+  localStorage.setItem(KEYS.achievements, JSON.stringify(state.achievements));
+  localStorage.setItem(KEYS.shop, JSON.stringify(state.shop));
+  localStorage.setItem(KEYS.history, JSON.stringify(state.history));
+  localStorage.setItem(KEYS.activity, state.activity);
+  localStorage.setItem(KEYS.claimedChests, JSON.stringify(state.claimedChests));
+  localStorage.setItem(KEYS.taskDoneToday, JSON.stringify(state.taskDoneToday));
+  localStorage.setItem(KEYS.timer, JSON.stringify(state.timer));
+  localStorage.setItem(KEYS.taskStats, JSON.stringify(state.taskStats));
+  localStorage.setItem(KEYS.backgrounds, JSON.stringify(state.backgrounds));
+  localStorage.setItem(KEYS.currentBg, state.currentBg);
+  localStorage.setItem(KEYS.lastTs, String(Date.now()));
+  localStorage.setItem(KEYS.lastDate, todayStr());
+  localStorage.setItem(KEYS.sig, computeSig());
+}
+function load(){
+  // 先校验签名，检测外部篡改
+  const storedSig = localStorage.getItem(KEYS.sig);
+  if (storedSig) {
+    // 暂载入数据后比对签名
+    state.diamond = parseInt(localStorage.getItem(KEYS.diamond)||'0',10);
+    state.tasks = JSON.parse(localStorage.getItem(KEYS.tasks)||'[]');
+    state.chests = JSON.parse(localStorage.getItem(KEYS.chests)||'[]');
+    state.achievements = JSON.parse(localStorage.getItem(KEYS.achievements)||'[]');
+    state.shop = JSON.parse(localStorage.getItem(KEYS.shop)||'[]').map(s=>({...s, stock:(typeof s.stock==='number')?s.stock:999}));
+    state.history = JSON.parse(localStorage.getItem(KEYS.history)||'[]');
+    state.activity = parseInt(localStorage.getItem(KEYS.activity)||'0',10);
+    state.claimedChests = JSON.parse(localStorage.getItem(KEYS.claimedChests)||'[]');
+    state.taskDoneToday = JSON.parse(localStorage.getItem(KEYS.taskDoneToday)||'[]');
+    state.taskStats = JSON.parse(localStorage.getItem(KEYS.taskStats)||'{}');
+    state.backgrounds = JSON.parse(localStorage.getItem(KEYS.backgrounds)||'[]');
+    state.currentBg = parseInt(localStorage.getItem(KEYS.currentBg)||'-1',10);
+    if (computeSig() !== storedSig) {
+      // 签名不匹配，数据被外部篡改，重置为出厂状态
+      console.warn('数据签名校验失败，已重置为出厂状态');
+      Object.values(KEYS).forEach(k=>{ if(k!==KEYS.installDismiss) localStorage.removeItem(k); });
+      state = {diamond:0,tasks:[],chests:[],achievements:[],shop:[],history:[],activity:0,claimedChests:[],taskDoneToday:[],timer:null,taskStats:{},backgrounds:[],currentBg:-1,currentTab:'tasks'};
+    }
+  }
+  state.timer = JSON.parse(localStorage.getItem(KEYS.timer)||'null');
+  if(state.chests.length===0){
+    state.chests = CONFIG.defaultChestReq.map((r,i)=>({id:uid(),requiredActivity:r,diamondReward:CONFIG.defaultChestReward[i]}));
+    localStorage.setItem(KEYS.chests, JSON.stringify(state.chests));
+  }
+  // 检测系统时间倒退（防作弊）
+  const lastTs = parseInt(localStorage.getItem(KEYS.lastTs)||'0',10);
+  const nowTs = Date.now();
+  if (lastTs && nowTs < lastTs - 60000) {
+    // 系统时间被调到过去超过 1 分钟，视为作弊，清除正在进行的计时
+    if (state.timer) {
+      state.timer = null;
+      localStorage.removeItem(KEYS.timer);
+      console.warn('检测到系统时间倒退，已清除计时');
+    }
+  }
+  dailyResetCheck();
+}
+function dailyResetCheck(){
+  const last = localStorage.getItem(KEYS.lastDate), today = todayStr();
+  if(last && last!==today){
+    state.activity=0; state.claimedChests=[]; state.taskDoneToday=[];
+    localStorage.setItem(KEYS.activity,'0');
+    localStorage.setItem(KEYS.claimedChests,'[]');
+    localStorage.setItem(KEYS.taskDoneToday,'[]');
+  }
+  localStorage.setItem(KEYS.lastDate, today);
+}
+
+/* ---------- 渲染 ---------- */
+function renderHeader(){
+  $('diamondCount').textContent = state.diamond;
+  renderActivityBar();
+}
+/* 活跃度进度条 + 宝箱沿节点分布 */
+function renderActivityBar(){
+  const maxReq = state.chests.length ? Math.max(...state.chests.map(c=>c.requiredActivity)) : 100;
+  const pct = Math.min(100, (state.activity/maxReq)*100);
+  $('activityFill').style.width = pct + '%';
+  $('activityText').textContent = '今日活跃度：' + state.activity + ' / ' + maxReq;
+  // 宝箱节点
+  const nodes = $('chestNodes');
+  nodes.innerHTML = '';
+  if (state.chests.length === 0) {
+    nodes.innerHTML = '<div style="position:absolute;left:50%;top:-4px;transform:translateX(-50%);font-size:11px;color:rgba(255,255,255,0.85);white-space:nowrap;">点击右侧 + 添加宝箱档位</div>';
+    return;
+  }
+  const sorted = [...state.chests].sort((a,b)=>a.requiredActivity-b.requiredActivity);
+  sorted.forEach(ch=>{
+    const claimed = state.claimedChests.includes(ch.id);
+    const met = !claimed && state.activity >= ch.requiredActivity;
+    const pos = Math.min(98, Math.max(2, (ch.requiredActivity/maxReq)*100));
+    const node = document.createElement('div');
+    node.className = 'chest-node' + (claimed ? ' claimed' : (met ? ' met' : ' locked'));
+    node.style.left = pos + '%';
+    node.innerHTML = '<span>' + (claimed ? '📭' : '🎁') + '</span>';
+    node.title = '需 ' + ch.requiredActivity + ' 活跃度，奖励 ' + ch.diamondReward + ' 钻石' + (claimed ? '（已领取）' : (met ? '（可领取）' : '（未达成）'));
+    if (met) node.onclick = () => claimChest(ch.id);
+    nodes.appendChild(node);
+    // 节点下方标注
+    const label = document.createElement('div');
+    label.className = 'chest-label';
+    label.style.left = pos + '%';
+    label.innerHTML = '<div class="req">' + ch.requiredActivity + '</div><div class="rew">+' + ch.diamondReward + '💎</div>';
+    nodes.appendChild(label);
+  });
+}
+function switchTab(tab){
+  state.currentTab=tab;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===tab));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.toggle('active',p.id==='panel-'+tab));
+  render();
+}
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>switchTab(t.dataset.tab)));
+
+function renderTasks(){
+  const list=$('taskList'), empty=$('taskEmpty'); list.innerHTML='';
+  if(state.tasks.length===0){ empty.style.display='block'; }
+  else {
+    empty.style.display='none';
+    state.tasks.forEach(task=>{
+      const done=state.taskDoneToday.includes(task.id);
+      const total=state.taskStats[task.id]||0;
+      const c=document.createElement('div'); c.className='card';
+      c.innerHTML='<div class="card-row"><div style="flex:1;min-width:0"><div class="card-title">'+escapeHtml(task.name)+'</div><div class="card-sub"><span class="tag">⏱ '+task.minutes+' 分钟</span><span class="tag gold">+'+task.activity+' 活跃度</span>'+(done?'<span class="tag done">今日已完成</span>':'')+'<span class="tag stock">累计 '+total+' 次</span></div></div><div class="task-actions">'+(done?'<button class="btn btn-sm btn-gray" disabled>已完成</button>':'<button class="btn btn-sm" onclick="startTimer(\''+task.id+'\')">开始专注</button>')+'<button class="icon-btn" onclick="editTask(\''+task.id+'\')">✏️</button><button class="icon-btn" onclick="deleteTask(\''+task.id+'\')">🗑️</button></div></div>';
+      list.appendChild(c);
+    });
+  }
+}
+function renderAchievements(){
+  const list=$('achievementList'), empty=$('achievementEmpty'); list.innerHTML='';
+  if(state.achievements.length===0){ empty.style.display='block'; return; }
+  empty.style.display='none';
+  state.achievements.forEach(ach=>{
+    const task=state.tasks.find(t=>t.id===ach.taskId);
+    const tn=task?task.name:'（任务已删除）';
+    const cur=state.taskStats[ach.taskId]||0;
+    const met=cur>=ach.requiredCount;
+    const pct=Math.min(100,(cur/ach.requiredCount)*100);
+    const c=document.createElement('div'); c.className='card';
+    c.innerHTML='<div class="card-row"><div style="flex:1;min-width:0"><div class="card-title">'+escapeHtml(ach.name)+'</div><div class="card-sub">累计完成「'+escapeHtml(tn)+'」 '+cur+' / '+ach.requiredCount+' 次</div><div class="card-sub"><span class="tag gold">奖励 '+ach.reward+' 💎</span>'+(ach.claimed?'<span class="tag done">已达成 ✓</span>':(met?'<span class="tag done">可领取</span>':'<span class="tag soldout">未达成</span>'))+'</div><div class="mini-progress"><div class="mini-progress-fill" style="width:'+pct+'%"></div></div></div><div class="task-actions" style="flex-direction:column;align-items:flex-end;gap:6px">'+(ach.claimed?'<button class="btn btn-sm btn-gray" disabled>已达成</button>':(met?'<button class="btn btn-sm btn-gold" disabled>待自动发放</button>':'<button class="btn btn-sm btn-gray" disabled>未达成</button>'))+'<div style="display:flex;gap:4px"><button class="icon-btn" onclick="editAchievement(\''+ach.id+'\')">✏️</button><button class="icon-btn" onclick="deleteAchievement(\''+ach.id+'\')">🗑️</button></div></div></div>';
+    list.appendChild(c);
+  });
+}
+function renderShop(){
+  const list=$('shopList'), empty=$('shopEmpty'); list.innerHTML='';
+  if(state.shop.length===0){ empty.style.display='block'; }
+  else {
+    empty.style.display='none';
+    state.shop.forEach(item=>{
+      const out=item.stock<=0;
+      const afford=state.diamond>=item.cost;
+      const can=afford&&!out;
+      const c=document.createElement('div'); c.className='card';
+      c.innerHTML='<div class="card-row"><div style="flex:1;min-width:0"><div class="card-title">'+escapeHtml(item.name)+'</div>'+(item.note?'<div class="card-sub">'+escapeHtml(item.note)+'</div>':'')+'<div class="card-sub diamond-num">消耗 '+item.cost+' 💎</div><div class="card-sub"><span class="tag '+(out?'soldout':'stock')+'">'+(out?'已售罄':'库存 '+item.stock)+'</span></div></div><div class="task-actions"><button class="btn btn-sm '+(can?'btn-gold':'btn-gray')+'" '+(can?'':'disabled')+' onclick="buyShop(\''+item.id+'\')">'+(out?'已售罄':'购买')+'</button><button class="icon-btn" onclick="editShop(\''+item.id+'\')">✏️</button><button class="icon-btn" onclick="deleteShop(\''+item.id+'\')">🗑️</button></div></div>';
+      list.appendChild(c);
+    });
+  }
+  if(state.history.length>0){
+    $('historyCard').style.display='block';
+    const h=$('historyList'); h.innerHTML='';
+    [...state.history].reverse().forEach(r=>{
+      const d=document.createElement('div'); d.className='history-item';
+      d.innerHTML='<div><div>'+escapeHtml(r.name)+' <span class="diamond-num">-'+r.cost+'💎</span></div><div class="history-time">'+escapeHtml(r.time)+'</div></div>';
+      h.appendChild(d);
+    });
+  } else { $('historyCard').style.display='none'; }
+}
+function render(){
+  renderHeader();
+  if(state.currentTab==='tasks') renderTasks();
+  else if(state.currentTab==='achievements') renderAchievements();
+  else if(state.currentTab==='shop') renderShop();
+}
+
+/* ============ 番茄计时（delta 累计法防作弊） ============ */
+let timerInterval=null;
+function startTimer(taskId){
+  const task=state.tasks.find(t=>t.id===taskId);
+  if(!task) return;
+  if(state.taskDoneToday.includes(taskId)){ toast('该任务今日已完成'); return; }
+  if(state.timer && state.timer.taskId!==taskId){ toast('已有任务专注中，请先完成或放弃'); return; }
+  if(!state.timer || state.timer.taskId!==taskId){
+    state.timer={taskId,totalSec:task.minutes*60,remainSec:task.minutes*60,lastTickAt:Date.now()};
+  } else { state.timer.lastTickAt=Date.now(); }
+  save(); showTimerScreen(task); startTimerTick();
+}
+function startTimerTick(){
+  if(timerInterval) clearInterval(timerInterval);
+  timerInterval=setInterval(()=>{
+    if(!state.timer){ clearInterval(timerInterval); timerInterval=null; return; }
+    const now=Date.now(), delta=now-state.timer.lastTickAt;
+    // delta 累计法：仅在合理区间内扣减，防止改系统时间快进
+    if(delta>500 && delta<CONFIG.maxDeltaMs) state.timer.remainSec-=1;
+    state.timer.lastTickAt=now;
+    if(state.timer.remainSec<=0){ state.timer.remainSec=0; finishTimer(); }
+    else if(state.timer.remainSec%5===0) save();
+    updateTimerUI();
+  }, CONFIG.timerTickMs);
+}
+function updateTimerUI(){
+  if(!state.timer) return;
+  const r=state.timer.remainSec, t=state.timer.totalSec;
+  $('timerDisplay').textContent=pad(Math.floor(r/60))+':'+pad(r%60);
+  $('timerProgress').style.strokeDashoffset=(2*Math.PI*120)*(1-r/t);
+}
+function showTimerScreen(task){
+  $('timerTaskName').textContent=task.name;
+  $('timerScreen').classList.add('show');
+  applyTimerBg();
+  updateTimerUI();
+}
+function hideTimerScreen(){ $('timerScreen').classList.remove('show'); }
+function finishTimer(){
+  clearInterval(timerInterval); timerInterval=null;
+  const tm=state.timer; if(!tm) return;
+  const task=state.tasks.find(t=>t.id===tm.taskId);
+  if(task && !state.taskDoneToday.includes(task.id)){
+    state.taskDoneToday.push(task.id);
+    state.activity+=task.activity;
+  }
+  if(task) state.taskStats[task.id]=(state.taskStats[task.id]||0)+1;
+  state.timer=null; save(); hideTimerScreen(); playRingtone(); render();
+  toast('🎉 专注完成！+'+(task?task.activity:0)+' 活跃度');
+  if(task) checkAchievementsForTask(task.id);
+}
+function abandonTimer(){
+  if(!confirm('确认放弃本次专注？任务不会标记完成，无活跃度奖励，不计入累计完成。')) return;
+  clearInterval(timerInterval); timerInterval=null;
+  state.timer=null; save(); hideTimerScreen(); render();
+  toast('已放弃专注');
+}
+
+/* ---------- 铃声（Web Audio） ---------- */
+let audioCtx=null;
+function playRingtone(){
+  try{
+    if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+    if(audioCtx.state==='suspended') audioCtx.resume();
+    let n=0;
+    const beep=()=>{
+      if(n>=CONFIG.ringCount) return; n++;
+      const o=audioCtx.createOscillator(), g=audioCtx.createGain();
+      o.frequency.value=CONFIG.ringFreq; o.type='sine';
+      g.gain.setValueAtTime(0.001,audioCtx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.3,audioCtx.currentTime+0.05);
+      g.gain.exponentialRampToValueAtTime(0.001,audioCtx.currentTime+0.4);
+      o.connect(g); g.connect(audioCtx.destination);
+      o.start(); o.stop(audioCtx.currentTime+0.4);
+      setTimeout(beep, CONFIG.ringIntervalMs);
+    };
+    beep();
+  }catch(e){}
+}
+
+/* ============ 成就系统：绑定任务+累计次数+自动发放 ============ */
+function checkAchievementsForTask(taskId){
+  let awarded=[];
+  state.achievements.forEach(ach=>{
+    if(ach.taskId===taskId && !ach.claimed){
+      const cur=state.taskStats[taskId]||0;
+      if(cur>=ach.requiredCount){
+        ach.claimed=true; state.diamond+=ach.reward; awarded.push(ach);
+      }
+    }
+  });
+  if(awarded.length>0){
+    save(); render();
+    awarded.forEach((a,i)=>setTimeout(()=>showAchPopup(a), i*1200));
+  }
+}
+function showAchPopup(ach){
+  $('achPopupName').textContent='「'+ach.name+'」';
+  $('achPopupReward').textContent='+'+ach.reward+' 💎';
+  $('achPopup').classList.add('show');
+}
+function closeAchPopup(){ $('achPopup').classList.remove('show'); }
+function openAchievementForm(id){
+  const ach=id?state.achievements.find(a=>a.id===id):null;
+  const opts=state.tasks.length?state.tasks.map(t=>'<option value="'+t.id+'" '+(ach&&ach.taskId===t.id?'selected':'')+'>'+escapeHtml(t.name)+'</option>').join(''):'<option value="">（请先创建任务）</option>';
+  showModal('<div class="modal-title">'+(ach?'编辑成就':'添加成就')+'</div><div class="field"><label>成就名称</label><input id="f_achName" type="text" placeholder="例如：阅读达人" value="'+(ach?escapeHtml(ach.name):'')+'" maxlength="30"></div><div class="field"><label>绑定任务</label><select id="f_achTask">'+opts+'</select></div><div class="field"><label>完成次数门槛</label><input id="f_achCount" type="number" min="1" max="9999" placeholder="'+CONFIG.defaultAchCount+'" value="'+(ach?ach.requiredCount:'')+'"></div><div class="field"><label>奖励钻石</label><input id="f_achReward" type="number" min="1" placeholder="例如 100" value="'+(ach?ach.reward:'')+'"></div><div class="modal-actions"><button class="btn btn-outline btn-block" onclick="closeModal()">取消</button><button class="btn btn-block" onclick="saveAchievement(\''+(id||'')+'\')">保存</button></div>');
+}
+function saveAchievement(id){
+  const name=$('f_achName').value.trim();
+  const taskId=$('f_achTask').value;
+  const rc=parseInt($('f_achCount').value,10)||CONFIG.defaultAchCount;
+  const rw=parseInt($('f_achReward').value,10);
+  if(!name){toast('请填写成就名称');return;}
+  if(!taskId){toast('请先创建任务后再添加成就');return;}
+  if(rc<1){toast('完成次数必须大于0');return;}
+  if(!rw||rw<1){toast('请填写奖励钻石数');return;}
+  if(id){ const a=state.achievements.find(a=>a.id===id); if(a){a.name=name;a.taskId=taskId;a.requiredCount=rc;a.reward=rw;} }
+  else { state.achievements.push({id:uid(),name,taskId,requiredCount:rc,reward:rw,claimed:false}); }
+  save(); closeModal(); render(); checkAchievementsForTask(taskId);
+}
+function editAchievement(id){ openAchievementForm(id); }
+function deleteAchievement(id){ if(!confirm('删除该成就？'))return; state.achievements=state.achievements.filter(a=>a.id!==id); save(); render(); }
+
+/* ---------- 任务 CRUD ---------- */
+function openTaskForm(id){
+  const t=id?state.tasks.find(t=>t.id===id):null;
+  showModal('<div class="modal-title">'+(t?'编辑任务':'添加任务')+'</div><div class="field"><label>任务名称</label><input id="f_taskName" type="text" placeholder="例如：阅读 30 分钟" value="'+(t?escapeHtml(t.name):'')+'" maxlength="30"></div><div class="field"><label>番茄专注分钟数</label><input id="f_taskMin" type="number" min="1" max="180" placeholder="'+CONFIG.defaultTaskMinutes+'" value="'+(t?t.minutes:'')+'"></div><div class="field"><label>完成后获得活跃度</label><input id="f_taskAct" type="number" min="1" max="999" placeholder="'+CONFIG.defaultTaskActivity+'" value="'+(t?t.activity:'')+'"></div><div class="modal-actions"><button class="btn btn-outline btn-block" onclick="closeModal()">取消</button><button class="btn btn-block" onclick="saveTask(\''+(id||'')+'\')">保存</button></div>');
+}
+function saveTask(id){
+  const name=$('f_taskName').value.trim();
+  const m=parseInt($('f_taskMin').value,10)||CONFIG.defaultTaskMinutes;
+  const a=parseInt($('f_taskAct').value,10)||CONFIG.defaultTaskActivity;
+  if(!name){toast('请填写任务名称');return;}
+  if(m<1){toast('专注分钟数必须大于0');return;}
+  if(a<1){toast('活跃度必须大于0');return;}
+  if(id){
+    if(state.timer&&state.timer.taskId===id){toast('该任务专注中，无法编辑');return;}
+    const t=state.tasks.find(t=>t.id===id); if(t){t.name=name;t.minutes=m;t.activity=a;}
+  } else { state.tasks.push({id:uid(),name,minutes:m,activity:a}); }
+  save(); closeModal(); render();
+}
+function editTask(id){ openTaskForm(id); }
+function deleteTask(id){
+  if(state.timer&&state.timer.taskId===id){toast('该任务专注中，请先完成或放弃');return;}
+  const bound=state.achievements.filter(a=>a.taskId===id);
+  if(bound.length>0){toast('该任务绑定了 '+bound.length+' 个成就，请先删除或修改');return;}
+  if(!confirm('确认删除该任务？'))return;
+  state.tasks=state.tasks.filter(t=>t.id!==id);
+  state.taskDoneToday=state.taskDoneToday.filter(t=>t!==id);
+  delete state.taskStats[id];
+  save(); render();
+}
+
+/* ---------- 宝箱 CRUD（节点位于进度条，列表式管理在弹窗内） ---------- */
+function openChestForm(){
+  // 先列出已有宝箱档位（可编辑/删除），再展示新增表单
+  const list = state.chests.length
+    ? state.chests.map(ch=>'<div class="chest-mgr-item"><div class="chest-mgr-info">需 '+ch.requiredActivity+' 活跃度 · 奖励 '+ch.diamondReward+' 💎</div><div class="chest-mgr-acts"><button class="icon-btn" onclick="editChest(\''+ch.id+'\')">✏️</button><button class="icon-btn" onclick="deleteChest(\''+ch.id+'\')">🗑️</button></div></div>').join('')
+    : '<div style="text-align:center;color:var(--text-soft);font-size:13px;padding:10px 0">暂无宝箱档位</div>';
+  showModal('<div class="modal-title">🎁 活跃度宝箱档位</div>'+list+'<div style="height:1px;background:var(--line-soft);margin:14px 0;"></div><div class="field"><label>所需活跃度</label><input id="f_chestReq" type="number" min="1" placeholder="例如 60"></div><div class="field"><label>奖励钻石数量</label><input id="f_chestReward" type="number" min="1" placeholder="例如 30"></div><div class="modal-actions"><button class="btn btn-outline btn-block" onclick="closeModal()">取消</button><button class="btn btn-block" onclick="saveChest()">添加</button></div>');
+}
+function saveChest(){
+  const r=parseInt($('f_chestReq').value,10), rw=parseInt($('f_chestReward').value,10);
+  if(!r||r<1){toast('请填写所需活跃度');return;}
+  if(!rw||rw<1){toast('请填写奖励钻石数');return;}
+  state.chests.push({id:uid(),requiredActivity:r,diamondReward:rw});
+  save(); closeModal(); render();
+  toast('宝箱档位已添加');
+}
+function editChest(id){
+  const ch=state.chests.find(c=>c.id===id); if(!ch)return;
+  const list = state.chests.map(c=>'<div class="chest-mgr-item"><div class="chest-mgr-info">需 '+c.requiredActivity+' 活跃度 · 奖励 '+c.diamondReward+' 💎</div><div class="chest-mgr-acts"><button class="icon-btn" onclick="editChest(\''+c.id+'\')">✏️</button><button class="icon-btn" onclick="deleteChest(\''+c.id+'\')">🗑️</button></div></div>').join('');
+  showModal('<div class="modal-title">编辑宝箱档位</div>'+list+'<div style="height:1px;background:var(--line-soft);margin:14px 0;"></div><div class="field"><label>所需活跃度</label><input id="f_chestReq" type="number" min="1" value="'+ch.requiredActivity+'"></div><div class="field"><label>奖励钻石数量</label><input id="f_chestReward" type="number" min="1" value="'+ch.diamondReward+'"></div><div class="modal-actions"><button class="btn btn-outline btn-block" onclick="openChestForm()">返回</button><button class="btn btn-block" onclick="updateChest(\''+id+'\')">保存</button></div>');
+}
+function updateChest(id){
+  const r=parseInt($('f_chestReq').value,10), rw=parseInt($('f_chestReward').value,10);
+  if(!r||r<1){toast('请填写所需活跃度');return;}
+  if(!rw||rw<1){toast('请填写奖励钻石数');return;}
+  const ch=state.chests.find(c=>c.id===id); if(ch){ch.requiredActivity=r;ch.diamondReward=rw;}
+  save(); closeModal(); render();
+  toast('宝箱档位已更新');
+}
+function claimChest(cid){
+  const ch=state.chests.find(c=>c.id===cid); if(!ch)return;
+  if(state.claimedChests.includes(cid)){toast('今日已领取');return;}
+  if(state.activity<ch.requiredActivity){toast('活跃度未达标');return;}
+  state.activity-=ch.requiredActivity; state.diamond+=ch.diamondReward; state.claimedChests.push(cid);
+  save(); render(); toast('🎉 +'+ch.diamondReward+' 钻石！');
+}
+function deleteChest(id){ if(!confirm('删除该宝箱档位？'))return; state.chests=state.chests.filter(c=>c.id!==id); state.claimedChests=state.claimedChests.filter(c=>c!==id); save(); render(); openChestForm(); toast('宝箱档位已删除'); }
+
+/* ---------- 商城 CRUD（含库存） ---------- */
+function openShopForm(id){
+  const it=id?state.shop.find(s=>s.id===id):null;
+  showModal('<div class="modal-title">'+(it?'编辑商品':'添加商品')+'</div><div class="field"><label>商品名称</label><input id="f_shopName" type="text" placeholder="例如：看一集喜欢的剧" value="'+(it?escapeHtml(it.name):'')+'" maxlength="30"></div><div class="field"><label>消耗钻石数量</label><input id="f_shopCost" type="number" min="1" placeholder="'+CONFIG.defaultShopCost+'" value="'+(it?it.cost:'')+'"></div><div class="field"><label>商品库存（购买一次减一，归零下架）</label><input id="f_shopStock" type="number" min="0" placeholder="'+CONFIG.defaultShopStock+'" value="'+(it?it.stock:'')+'"></div><div class="field"><label>商品备注（可选）</label><textarea id="f_shopNote" rows="2" placeholder="例如：仅限周末兑换" maxlength="80">'+(it?escapeHtml(it.note||''):'')+'</textarea></div><div class="modal-actions"><button class="btn btn-outline btn-block" onclick="closeModal()">取消</button><button class="btn btn-block" onclick="saveShop(\''+(id||'')+'\')">保存</button></div>');
+}
+function saveShop(id){
+  const name=$('f_shopName').value.trim();
+  const cost=parseInt($('f_shopCost').value,10);
+  const stock=parseInt($('f_shopStock').value,10);
+  const note=$('f_shopNote').value.trim();
+  if(!name){toast('请填写商品名称');return;}
+  if(!cost||cost<1){toast('请填写消耗钻石数');return;}
+  if(isNaN(stock)||stock<0){toast('请填写有效库存数');return;}
+  if(id){ const s=state.shop.find(s=>s.id===id); if(s){s.name=name;s.cost=cost;s.stock=stock;s.note=note;} }
+  else { state.shop.push({id:uid(),name,cost,stock,note}); }
+  save(); closeModal(); render();
+}
+function buyShop(id){
+  const it=state.shop.find(s=>s.id===id); if(!it)return;
+  if(it.stock<=0){toast('已售罄');return;}
+  if(state.diamond<it.cost){toast('钻石不足');return;}
+  if(!confirm('确认消耗 '+it.cost+' 钻石购买「'+it.name+'」？'))return;
+  state.diamond-=it.cost; it.stock-=1;
+  const now=new Date();
+  const time=now.getFullYear()+'-'+pad(now.getMonth()+1)+'-'+pad(now.getDate())+' '+pad(now.getHours())+':'+pad(now.getMinutes());
+  state.history.push({time,name:it.name,cost:it.cost});
+  save(); render(); toast('🎉 购买成功！');
+}
+function editShop(id){ openShopForm(id); }
+function deleteShop(id){ if(!confirm('删除该商品？'))return; state.shop=state.shop.filter(s=>s.id!==id); save(); render(); }
+
+/* ============ 番茄计时背景自定义 ============ */
+function applyTimerBg(){
+  const bg=$('timerBg');
+  if(state.backgrounds.length>0 && state.currentBg>=0 && state.currentBg<state.backgrounds.length){
+    bg.style.backgroundImage='url('+state.backgrounds[state.currentBg]+')';
+    bg.classList.add('has-img');
+  } else {
+    bg.style.backgroundImage='';
+    bg.classList.remove('has-img');
+  }
+}
+function openBgPanel(){
+  showModal('<div class="modal-title">🖼️ 计时背景</div><button class="btn btn-block btn-lavender" onclick="$(\'bgFileInput\').click()">📤 上传本地图片</button><div id="bgList" style="margin-top:14px"></div><div style="margin-top:10px"><button class="btn btn-outline btn-block" onclick="resetTimerBg()">恢复默认莫兰迪背景</button></div><div class="modal-actions" style="margin-top:14px"><button class="btn btn-outline btn-block" onclick="closeModal()">关闭</button></div>');
+  renderBgList();
+}
+function renderBgList(){
+  const list=$('bgList');
+  if(state.backgrounds.length===0){
+    list.innerHTML='<div style="text-align:center;color:var(--text-soft);font-size:13px;padding:14px">暂无保存的背景，点击上方上传</div>';
+    return;
+  }
+  list.innerHTML='';
+  state.backgrounds.forEach((bg,i)=>{
+    const d=document.createElement('div');
+    d.className='bg-item'+(state.currentBg===i?' active':'');
+    d.innerHTML='<img class="bg-thumb" src="'+bg+'"><div class="bg-item-info">背景 '+(i+1)+(state.currentBg===i?' · 当前使用':'')+'</div><button class="icon-btn" onclick="deleteBg('+i+')">🗑️</button>';
+    d.style.cursor='pointer';
+    d.addEventListener('click',e=>{ if(e.target.tagName!=='BUTTON') selectBg(i); });
+    list.appendChild(d);
+  });
+}
+function selectBg(i){
+  state.currentBg=i; save(); applyTimerBg(); renderBgList();
+  toast('已切换背景');
+}
+function deleteBg(i){
+  if(!confirm('删除该背景图？'))return;
+  state.backgrounds.splice(i,1);
+  if(state.currentBg>=state.backgrounds.length) state.currentBg=state.backgrounds.length-1;
+  save(); applyTimerBg(); renderBgList();
+  toast('已删除');
+}
+function resetTimerBg(){
+  state.currentBg=-1; save(); applyTimerBg(); renderBgList();
+  toast('已恢复默认背景');
+}
+/* 文件上传：压缩+转 base64 存储 */
+$('bgFileInput').addEventListener('change',function(e){
+  const file=e.target.files[0];
+  if(!file) return;
+  const reader=new FileReader();
+  reader.onload=(ev)=>{
+    const img=new Image();
+    img.onload=()=>{
+      let w=img.width, h=img.height;
+      if(w>CONFIG.bgMaxWidth){ h=h*CONFIG.bgMaxWidth/w; w=CONFIG.bgMaxWidth; }
+      const cv=document.createElement('canvas');
+      cv.width=w; cv.height=h;
+      const ctx=cv.getContext('2d');
+      ctx.drawImage(img,0,0,w,h);
+      const data=cv.toDataURL('image/jpeg',CONFIG.bgQuality);
+      state.backgrounds.push(data);
+      state.currentBg=state.backgrounds.length-1;
+      save(); applyTimerBg(); renderBgList();
+      toast('✅ 背景已上传并应用');
+    };
+    img.src=ev.target.result;
+  };
+  reader.readAsDataURL(file);
+  e.target.value=''; // 允许重复选同一文件
+});
+
+/* ---------- 模态层 ---------- */
+function showModal(html){ $('modalContent').innerHTML=html; $('modalMask').classList.add('show'); }
+function closeModal(){ $('modalMask').classList.remove('show'); }
+$('modalMask').addEventListener('click',e=>{ if(e.target===$('modalMask')) closeModal(); });
+$('fab').addEventListener('click',()=>{
+  if(state.currentTab==='tasks') openTaskForm();
+  else if(state.currentTab==='achievements') openAchievementForm();
+  else if(state.currentTab==='shop') openShopForm();
+});
+
+/* ---------- Toast ---------- */
+let toastTimer=null;
+function toast(msg){
+  let el=document.getElementById('toast');
+  if(!el){ el=document.createElement('div'); el.id='toast'; document.body.appendChild(el); }
+  el.textContent=msg; el.style.opacity='1';
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>{ el.style.opacity='0'; },1900);
+}
+
+/* ============ 管理面板 ============ */
+function openSettings(){
+  showModal('<div class="modal-title">⚙️ 管理面板</div><div class="field"><label>钻石数量</label><input id="f_setDiamond" type="number" min="0" value="'+state.diamond+'"></div><button class="btn btn-block btn-gold" onclick="saveDiamond()">保存钻石</button><div class="field" style="margin-top:14px"><label>今日活跃度</label><input id="f_setActivity" type="number" min="0" value="'+state.activity+'"></div><button class="btn btn-block" onclick="saveActivity()">保存活跃度</button><div style="height:1px;background:var(--line-soft);margin:18px 0;"></div><button class="btn btn-block btn-outline" onclick="resetTodayTasks()">重置今日任务</button><div style="height:8px"></div><button class="btn btn-block btn-outline" onclick="exportData()">📤 导出数据备份</button><div style="height:8px"></div><button class="btn btn-block btn-outline" onclick="showImportBox()">📥 导入数据备份</button><div id="importBox" style="display:none;margin-top:10px"><div class="field"><label>粘贴备份 JSON</label><textarea id="f_import" rows="4" placeholder="粘贴之前导出的 JSON"></textarea></div><button class="btn btn-block" onclick="importData()">恢复数据</button></div><div style="height:1px;background:var(--line-soft);margin:18px 0;"></div><button class="btn btn-block btn-danger" onclick="factoryReset()">🗑️ 清空全部数据</button><div class="modal-actions" style="margin-top:14px"><button class="btn btn-outline btn-block" onclick="closeModal()">关闭</button></div>');
+}
+function saveDiamond(){ const v=parseInt($('f_setDiamond').value,10); if(isNaN(v)||v<0){toast('请输入有效数字');return;} state.diamond=v; save(); render(); toast('钻石已更新'); closeModal(); }
+function saveActivity(){ const v=parseInt($('f_setActivity').value,10); if(isNaN(v)||v<0){toast('请输入有效数字');return;} state.activity=v; save(); render(); toast('活跃度已更新'); closeModal(); }
+function resetTodayTasks(){ if(!confirm('确认将今日所有任务标记为未完成？活跃度保留。'))return; state.taskDoneToday=[]; state.claimedChests=[]; save(); render(); toast('今日任务已重置'); closeModal(); }
+function exportData(){
+  const data={diamond:state.diamond,tasks:state.tasks,chests:state.chests,achievements:state.achievements,shop:state.shop,history:state.history,taskStats:state.taskStats,backgrounds:state.backgrounds,currentBg:state.currentBg};
+  const json=JSON.stringify(data);
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(json).then(()=>toast('✅ 备份已复制到剪贴板')).catch(()=>fallbackCopy(json));
+  } else fallbackCopy(json);
+}
+function fallbackCopy(text){
+  const ta=document.createElement('textarea'); ta.value=text; ta.style.position='fixed'; ta.style.top='-9999px'; document.body.appendChild(ta); ta.select();
+  try{document.execCommand('copy');toast('✅ 备份已复制到剪贴板');}catch(e){toast('复制失败，请手动选择');alert(text);}
+  document.body.removeChild(ta);
+}
+function showImportBox(){ $('importBox').style.display='block'; }
+function importData(){
+  const txt=$('f_import').value.trim(); if(!txt){toast('请粘贴备份 JSON');return;}
+  let data; try{data=JSON.parse(txt);}catch(e){toast('JSON 格式错误');return;}
+  if(!confirm('确认导入？将覆盖当前所有数据！'))return;
+  if(typeof data.diamond==='number')state.diamond=data.diamond;
+  if(Array.isArray(data.tasks))state.tasks=data.tasks;
+  if(Array.isArray(data.chests))state.chests=data.chests;
+  if(Array.isArray(data.achievements))state.achievements=data.achievements;
+  if(Array.isArray(data.shop))state.shop=data.shop.map(s=>({...s,stock:(typeof s.stock==='number')?s.stock:999}));
+  if(Array.isArray(data.history))state.history=data.history;
+  if(data.taskStats&&typeof data.taskStats==='object')state.taskStats=data.taskStats;
+  if(Array.isArray(data.backgrounds))state.backgrounds=data.backgrounds;
+  if(typeof data.currentBg==='number')state.currentBg=data.currentBg;
+  state.activity=0; state.claimedChests=[]; state.taskDoneToday=[]; state.timer=null;
+  save(); render(); closeModal(); toast('✅ 数据已恢复');
+}
+function factoryReset(){
+  if(!confirm('⚠️ 确认清空全部数据？不可撤销！'))return;
+  if(!confirm('再次确认：所有数据都将被清空！'))return;
+  Object.values(KEYS).forEach(k=>localStorage.removeItem(k));
+  state={diamond:0,tasks:[],chests:[],achievements:[],shop:[],history:[],activity:0,claimedChests:[],taskDoneToday:[],timer:null,taskStats:{},backgrounds:[],currentBg:-1,currentTab:'tasks'};
+  state.chests=CONFIG.defaultChestReq.map((r,i)=>({id:uid(),requiredActivity:r,diamondReward:CONFIG.defaultChestReward[i]}));
+  clearInterval(timerInterval); timerInterval=null; hideTimerScreen();
+  save(); closeModal(); render(); toast('已恢复出厂设置');
+}
+
+/* ============ PWA：安装提示 + Service Worker 注册（相对路径） ============ */
+let deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  if (!localStorage.getItem(KEYS.installDismiss)) {
+    $('installBanner').classList.add('show');
+  }
+});
+function installPWA(){
+  if (!deferredPrompt) { toast('请使用浏览器菜单「添加到主屏幕」'); return; }
+  deferredPrompt.prompt();
+  deferredPrompt.userChoice.then(()=>{ deferredPrompt=null; $('installBanner').classList.remove('show'); });
+}
+function hideInstallBanner(){
+  $('installBanner').classList.remove('show');
+  localStorage.setItem(KEYS.installDismiss, '1');
+}
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(()=>{ /* 离线缓存注册失败静默处理 */ });
+  });
+}
+
+/* ---------- 启动 ---------- */
+function init(){
+  load(); render();
+  if(state.timer){
+    const task=state.tasks.find(t=>t.id===state.timer.taskId);
+    if(task&&state.timer.remainSec>0){ state.timer.lastTickAt=Date.now(); showTimerScreen(task); startTimerTick(); }
+    else if(state.timer.remainSec<=0){ finishTimer(); }
+    else { state.timer=null; save(); }
+  }
+}
+document.addEventListener('DOMContentLoaded', init);
+document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible'&&state.timer){ state.timer.lastTickAt=Date.now(); if(!timerInterval)startTimerTick(); } });
+document.addEventListener('touchstart',function initAudio(){ if(!audioCtx){ try{audioCtx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){} } document.removeEventListener('touchstart',initAudio); },{once:true});
+</script>
+</body>
+</html>

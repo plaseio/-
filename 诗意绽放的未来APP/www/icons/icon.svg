@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 诗意绽放的未来 · 矢量主图标（可任意缩放，莫兰迪粉水晶钻石） -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F5EFE9"/>
+      <stop offset="0.5" stop-color="#E8D0CC"/>
+      <stop offset="1" stop-color="#D4A5A5"/>
+    </linearGradient>
+    <linearGradient id="gem" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F0DCD6"/>
+      <stop offset="0.55" stop-color="#D4A5A5"/>
+      <stop offset="1" stop-color="#A8857F"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.35" cy="0.25" r="0.6">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.95"/>
+      <stop offset="0.42" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="softShadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="8"/>
+      <feOffset dx="0" dy="6" result="shadow"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.35"/></feComponentTransfer>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <!-- 背景：莫兰迪粉渐变 -->
+  <rect width="512" height="512" fill="url(#bg)"/>
+  <!-- 角落淡星点装饰 -->
+  <circle cx="78" cy="86" r="3" fill="#C9BED9" opacity="0.4"/>
+  <circle cx="430" cy="110" r="2.5" fill="#D4A5A5" opacity="0.35"/>
+  <circle cx="96" cy="420" r="2.5" fill="#C9B896" opacity="0.35"/>
+  <circle cx="430" cy="410" r="3" fill="#C9BED9" opacity="0.4"/>
+  <!-- 中心圆润水晶钻石宝石（圆角软萌） -->
+  <g filter="url(#softShadow)" transform="translate(256 260)">
+    <!-- 主体：圆润水滴/宝石形 -->
+    <path d="M0,-120 C40,-120 70,-95 70,-60 C70,40 50,110 0,140 C-50,110 -70,40 -70,-60 C-70,-95 -40,-120 0,-120 Z"
+          fill="url(#gem)" stroke="#A8857F" stroke-width="3" stroke-linejoin="round"/>
+    <!-- 高光 -->
+    <ellipse cx="-18" cy="-70" rx="22" ry="34" fill="url(#glow)" transform="rotate(-12)"/>
+    <!-- 中心刻面线 -->
+    <path d="M-40,-30 L0,40 L40,-30" fill="none" stroke="#A8857F" stroke-width="2" opacity="0.45" stroke-linecap="round"/>
+  </g>
+</svg>
